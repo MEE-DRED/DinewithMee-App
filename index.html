@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dine with Mee - Bringing Nigeria to Your Doorstep</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #2d5a27;
+            --secondary-green: #4a7c59;
+            --gold-accent: #ffd700;
+            --warm-accent: #ff6b6b;
+            --warm-orange: #ffa500;
+            --white: #ffffff;
+            --light-gray: #f8f9fa;
+            --dark-gray: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            min-height: 100vh;
+        }
+
+        /* Animations */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .slide-up {
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .slide-down {
+            animation: slideDown 0.6s ease-out;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(45, 90, 39, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--gold-accent);
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-item a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item a:hover {
+            background: var(--gold-accent);
+            color: var(--primary-green);
+            transform: translateY(-2px);
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-icon {
+            position: relative;
+            background: var(--gold-accent);
+            color: var(--primary-green);
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--warm-accent);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            flex: 1;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-tagline {
+            font-size: 1.3rem;
+            color: var(--gold-accent);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--light-gray);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--gold-accent), var(--warm-orange));
+            color: var(--primary-green);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            color: var(--primary-green);
+            transform: translateY(-2px);
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-food-icon {
+            font-size: 15rem;
+            color: rgba(255, 215, 0, 0.3);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: var(--white);
+            min-height: 100vh;
+            padding: 4rem 0;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--secondary-green);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Categories */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: linear-gradient(135deg, var(--white) 0%, var(--light-gray) 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold-accent);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--primary-green);
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .category-description {
+            color: var(--secondary-green);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-accent);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            height: 200px;
+            background: linear-gradient(45deg, var(--secondary-green), var(--primary-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--gold-accent);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--warm-accent);
+            margin-bottom: 1rem;
+        }
+
+        .product-description {
+            color: var(--secondary-green);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            background: var(--primary-green);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: var(--secondary-green);
+            transform: translateY(-2px);
+        }
+
+        /* Telenutrition Plans */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .plan-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 3px solid transparent;
+        }
+
+        .plan-card.featured {
+            border-color: var(--gold-accent);
+            transform: scale(1.05);
+        }
+
+        .plan-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--warm-accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-period {
+            color: var(--secondary-green);
+            margin-bottom: 2rem;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .plan-features li {
+            padding: 0.5rem 0;
+            color: var(--secondary-green);
+            position: relative;
+        }
+
+        .plan-features li:before {
+            content: "✓";
+            color: var(--primary-green);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--secondary-green);
+        }
+
+        /* Cart */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .cart-total {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary-green);
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-green);
+            color: var(--white);
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer h3 {
+            color: var(--gold-accent);
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero-tagline {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--primary-green);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 0;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-item {
+                width: 100%;
+            }
+
+            .nav-item a {
+                display: block;
+                padding: 1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 6rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-food-icon {
+                font-size: 8rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .categories {
+                grid-template-columns: 1fr;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">🍽️ Dine with Mee</a>
+
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="#home">Home</a></li>
+                <li class="nav-item"><a href="#meals">Meals</a></li>
+                <li class="nav-item"><a href="#ingredients">Ingredients</a></li>
+                <li class="nav-item"><a href="#nutrition">Nutrition</a></li>
+                <li class="nav-item"><a href="#contact">Contact</a></li>
+            </ul>
+
+            <div class="cart-icon" onclick="openCart()">
+                🛒
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+
+            <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content slide-up">
+                <h1>Bringing Nigeria to Your Doorstep</h1>
+                <p class="hero-tagline">Authentic flavors, expert nutrition, delivered anywhere</p>
+                <p>Experience the rich taste of Nigerian cuisine with our meal delivery service, ingredient marketplace,
+                    and personalized nutrition consultations. Perfect for diaspora Nigerians, West Africans, and food
+                    enthusiasts worldwide.</p>
+
+                <div class="hero-buttons">
+                    <a href="#meals" class="btn btn-primary">Order Now</a>
+                    <a href="#nutrition" class="btn btn-secondary">Nutrition Plans</a>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <div class="hero-food-icon float-animation"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- About Us Section -->
+            <section class="section" id="about">
+                <div class="section-header">
+                    <h2 class="section-title">About Us</h2>
+                </div>
+                <div style="max-width:800px;margin:0 auto;font-size:1.15rem;color:#333;line-height:1.7;">
+                    <p>Dine with Mee is a digital platform dedicated to bringing the rich flavors and cultural heritage
+                        of Nigerian cuisine to Nigerians in the diaspora, West Africans, and food enthusiasts around the
+                        world. We make it easy to order authentic Nigerian meals, shop for traditional foodstuff and
+                        ingredients, and access expert-led telenutrition services — all in one place.</p>
+                    <p>Whether you crave the comfort of home-cooked jollof rice, need specialty spices straight from
+                        Nigeria, or want a personalized nutrition plan tailored to your lifestyle, Dine with Mee bridges
+                        the gap between tradition, taste, and technology.</p>
+                    <p>Our platform combines culinary excellence with modern convenience, ensuring that every order,
+                        consultation, and interaction reflects our passion for quality, authenticity, and customer
+                        satisfaction.</p>
+                    <h3 style="color:var(--primary-green);margin-top:2rem;">Mission</h3>
+                    <p>To bridge the gap between food, culture, and health by delivering authentic Nigerian meals,
+                        providing access to premium ingredients, and empowering individuals through expert-led nutrition
+                        services — all powered by innovative digital solutions.</p>
+                    <h3 style="color:var(--primary-green);margin-top:2rem;">Vision</h3>
+                    <p>To become the leading African food and nutrition platform worldwide, preserving culinary
+                        heritage, promoting healthier lifestyles, and connecting communities through the shared love of
+                        Nigerian cuisine.</p>
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Our Services</h2>
+                    <p class="section-subtitle">Discover authentic Nigerian cuisine, premium ingredients, and expert
+                        nutrition guidance</p>
+                </div>
+
+                <div class="categories">
+                    <div class="category-card" onclick="showSection('meals')">
+                        <div class="category-icon">🍽️</div>
+                        <h3 class="category-title">Nigerian Meals</h3>
+                        <p class="category-description">Ready-made authentic Nigerian dishes prepared by expert chefs
+                        </p>
+                        <a href="#meals" class="btn btn-primary">Browse Meals</a>
+                    </div>
+
+                    <div class="category-card" onclick="showSection('ingredients')">
+                        <div class="category-icon">🛍️</div>
+                        <h3 class="category-title">Ingredients & Foodstuff</h3>
+                        <p class="category-description">Premium Nigerian ingredients and condiments for home cooking</p>
+                        <a href="#ingredients" class="btn btn-primary">Shop Now</a>
+                    </div>
+
+                    <div class="category-card" onclick="showSection('nutrition')">
+                        <div class="category-icon">📊</div>
+                        <h3 class="category-title">Telenutrition Services</h3>
+                        <p class="category-description">Personalized meal plans and nutrition consultations</p>
+                        <a href="#nutrition" class="btn btn-primary">Get Started</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Meals Section -->
+            <section class="section" id="meals">
+                <div class="section-header">
+                    <h2 class="section-title">Featured Meals</h2>
+                    <p class="section-subtitle">Authentic Nigerian dishes made with love and traditional recipes</p>
+                </div>
+
+                <div class="products-grid" id="meals-grid">
+                    <!-- Meals will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Ingredients Section -->
+            <section class="section" id="ingredients">
+                <div class="section-header">
+                    <h2 class="section-title">Premium Ingredients</h2>
+                    <p class="section-subtitle">High-quality Nigerian foodstuff and condiments delivered fresh</p>
+                </div>
+
+                <div class="products-grid" id="ingredients-grid">
+                    <!-- Ingredients will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Nutrition Plans Section -->
+            <section class="section" id="nutrition">
+                <div class="section-header">
+                    <h2 class="section-title">Telenutrition Plans</h2>
+                    <p class="section-subtitle">Personalized nutrition guidance from certified dietitians</p>
+                </div>
+
+                <div class="plans-grid">
+                    <div class="plan-card">
+                        <h3 class="plan-name">Basic Plan</h3>
+                        <div class="plan-price">15,000 <small>RWF</small></div>
+                        <div class="plan-period">per month</div>
+                        <ul class="plan-features">
+                            <li>Monthly nutrition consultation</li>
+                            <li>Basic meal plan</li>
+                            <li>Email support</li>
+                            <li>Nutrition tracking dashboard</li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="openNutritionForm('Basic Plan')">Choose Basic</button>
+                    </div>
+
+                    <div class="plan-card featured">
+                        <h3 class="plan-name">Pro Plan</h3>
+                        <div class="plan-price">20,000 <small>RWF</small></div>
+                        <div class="plan-period">per month</div>
+                        <ul class="plan-features">
+                            <li>Bi-weekly consultations</li>
+                            <li>Customized meal plans</li>
+                            <li>Priority support</li>
+                            <li>Advanced nutrition tracking</li>
+                            <li>Recipe recommendations</li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="openNutritionForm('Pro Plan')">Choose Pro</button>
+                    </div>
+
+                    <div class="plan-card">
+                        <h3 class="plan-name">Premium Plan</h3>
+                        <div class="plan-price">30,000 <small>RWF</small></div>
+                        <div class="plan-period">per month</div>
+                        <ul class="plan-features">
+                            <li>Weekly consultations</li>
+                            <li>Fully personalized meal plans</li>
+                            <li>24/7 chat support</li>
+                            <li>Complete nutrition analysis</li>
+                            <li>Grocery shopping lists</li>
+                            <li>Family meal planning</li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="openNutritionForm('Premium Plan')">Choose
+                            Premium</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Nutrition Booking Modal -->
+            <div class="modal" id="nutrition-modal">
+                <div class="modal-content">
+                    <button class="modal-close" onclick="closeModal('nutrition-modal')">×</button>
+                    <h3 id="nutrition-plan-title">Book Telenutrition Consultation</h3>
+                    <form id="nutrition-form" onsubmit="submitNutritionForm(event)">
+                        <input type="text" name="fullname" placeholder="Full Name" required
+                            style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                        <input type="email" name="email" placeholder="Email" required
+                            style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                        <input type="text" name="address" placeholder="Address" required
+                            style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                        <input type="tel" name="phone" placeholder="Phone Number" required
+                            style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                        <input type="text" name="diet" placeholder="Dietary Preference (e.g. keto, vegan)"
+                            style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                        <input type="text" name="allergies" placeholder="Allergies"
+                            style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                        <input type="text" name="reason" placeholder="Reason for Consultation"
+                            style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                        <input type="text" name="time" placeholder="Preferred Time"
+                            style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                        <select name="platform" required
+                            style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                            <option value="">Preferred Platform</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="Zoom">Zoom</option>
+                            <option value="Google Meet">Google Meet</option>
+                            <option value="Teams">Teams</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary" style="width:100%;">Book Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-content" id="cart-modal-content">
+            <button class="modal-close" onclick="closeCart()">×</button>
+            <h3>Your Cart</h3>
+            <div id="cart-items"></div>
+            <div class="cart-total" id="cart-total">Total: 0 RWF</div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="showCheckoutForm()">Proceed to
+                Checkout</button>
+        </div>
+    </div>
+
+    <!-- Checkout Form Modal -->
+    <div class="modal" id="checkout-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('checkout-modal')">×</button>
+            <h3>Checkout</h3>
+            <form id="checkout-form" onsubmit="submitCheckoutForm(event)">
+                <input type="text" name="fullname" placeholder="Full Name" required
+                    style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                <input type="email" name="email" placeholder="Email" required
+                    style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                <input type="text" name="address" placeholder="Address" required
+                    style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                <input type="url" name="gps" placeholder="GPS Link"
+                    style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                <input type="tel" name="phone" placeholder="Phone Number" required
+                    style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                <select name="preference"
+                    style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                    <option value="">Preference</option>
+                    <option value="Extra Spicy">Extra Spicy</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Mild">Mild</option>
+                </select>
+                <input type="number" name="delivery" placeholder="Delivery Fees (optional)"
+                    style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                <select name="payment" required
+                    style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                    <option value="">Preferred Payment Option</option>
+                    <option value="MTN Mobile Money">MTN Mobile Money</option>
+                    <option value="Airtel Mobile Money">Airtel Mobile Money</option>
+                    <option value="Card">Card</option>
+                </select>
+                <button type="submit" class="btn btn-primary" style="width:100%;">Proceed</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="success-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('success-modal')">×</button>
+            <h3>Success!</h3>
+            <p id="success-message">Your order has been placed successfully!</p>
+            <button class="btn btn-primary" onclick="closeModal('success-modal')">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- Login/Signup Modal -->
+    <div class="modal" id="auth-modal">
+        <div class="modal-content" id="auth-modal-content">
+            <button class="modal-close" onclick="closeModal('auth-modal')">×</button>
+            <div id="login-form-section">
+                <h3 style="margin-bottom:1rem;">Login</h3>
+                <form id="login-form" onsubmit="submitLogin(event)">
+                    <input type="email" name="email" placeholder="Email" required
+                        style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                    <input type="password" name="password" placeholder="Password" required
+                        style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                    <button type="submit" class="btn btn-primary" style="width:100%;">Login</button>
+                </form>
+                <p style="margin-top:1rem;text-align:center;">
+                    Don't have an account? <a href="#" onclick="showSignupForm()"
+                        style="color:var(--primary-green);font-weight:600;">Sign Up</a>
+                </p>
+            </div>
+            <div id="signup-form-section" style="display:none;">
+                <h3 style="margin-bottom:1rem;">Sign Up</h3>
+                <form id="signup-form" onsubmit="submitSignup(event)">
+                    <input type="text" name="fullname" placeholder="Full Name" required
+                        style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                    <input type="email" name="email" placeholder="Email" required
+                        style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                    <select name="area" required
+                        style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                        <option value="">Select Your Area</option>
+                        <option>Kigali City</option>
+                        <option>Gasabo</option>
+                        <option>Kicukiro</option>
+                        <option>Nyarugenge</option>
+                        <option>Rubavu</option>
+                        <option>Musanze</option>
+                        <option>Huye</option>
+                        <option>Rwamagana</option>
+                        <option>Nyagatare</option>
+                        <option>Rusizi</option>
+                        <option>Gicumbi</option>
+                        <option>Karongi</option>
+                        <option>Other</option>
+                    </select>
+                    <input type="tel" name="phone" placeholder="Phone Number" required
+                        style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                    <select name="goal" required
+                        style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                        <option value="">Select Your Health Goal</option>
+                        <option>Gain weight</option>
+                        <option>Lose weight</option>
+                        <option>Maintain weight</option>
+                        <option>Build muscle</option>
+                    </select>
+                    <input type="number" name="current_weight" placeholder="Current Body Weight (Kg)" required
+                        style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                    <input type="number" name="target_weight" placeholder="Target Body Weight (Kg)" required
+                        style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                    <select name="allergies"
+                        style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                        <option value="">Allergies (optional)</option>
+                        <option>Peanuts</option>
+                        <option>Peas</option>
+                        <option>Gluten</option>
+                        <option>None</option>
+                    </select>
+                    <select name="lifestyle" required
+                        style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                        <option value="">Lifestyle</option>
+                        <option>Active</option>
+                        <option>Sedentary</option>
+                    </select>
+                    <select name="diet" required
+                        style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                        <option value="">Dietary Preference</option>
+                        <option>Keto</option>
+                        <option>Vegan</option>
+                        <option>Vegetarian</option>
+                        <option>Paleo</option>
+                        <option>Low Carb</option>
+                        <option>Gluten Free</option>
+                        <option>None</option>
+                    </select>
+                    <input type="password" name="password" placeholder="Password" required
+                        style="width:100%;margin-bottom:1rem;padding:0.7rem;border-radius:8px;border:1px solid #eee;">
+                    <button type="submit" class="btn btn-primary" style="width:100%;">Sign Up</button>
+                </form>
+                <p style="margin-top:1rem;text-align:center;">
+                    Already have an account? <a href="#" onclick="showLoginForm()"
+                        style="color:var(--primary-green);font-weight:600;">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <h3>Dine with Mee</h3>
+                <p>Bringing the taste of Nigeria to your doorstep, anywhere.</p>
+                <p>🌍 Serving Nigerians in diaspora worldwide</p>
+                <p>
+                    📧 dynwithmee@gmail.com | 📱 +250795913979
+                </p>
+                <p>
+                    <a href="https://medium.com/@dynwithmee" target="_blank" style="margin:0 8px;text-decoration:none;">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/medium.svg" alt="Medium"
+                            style="width:28px;height:28px;vertical-align:middle;background:#fff;border-radius:50%;padding:3px;">
+                    </a>
+                    <a href="https://wa.me/message/SZVAULWS37JZF1" target="_blank"
+                        style="margin:0 8px;text-decoration:none;">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg"
+                            alt="WhatsApp"
+                            style="width:28px;height:28px;vertical-align:middle;background:#fff;border-radius:50%;padding:3px;">
+                    </a>
+                    <a href="https://www.instagram.com/d.wmee?utm_source=qr&igsh=dHlxZno2YmRsNGN0" target="_blank"
+                        style="margin:0 8px;text-decoration:none;">
+                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"
+                            alt="Instagram"
+                            style="width:28px;height:28px;vertical-align:middle;background:#fff;border-radius:50%;padding:3px;">
+                    </a>
+                </p>
+                <p>&copy; 2025 Dine with Mee. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data
+        const meals = [
+            // Rice dishes
+            { id: 1, name: "Jollof Rice", price: 7500, icon: "🍚", description: "Aromatic rice cooked in rich tomato sauce with spices", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7GcBsSPk2GYi0OSeIxXg7sJ6it1IOvTS3CA&s" },
+            { id: 2, name: "Fried Rice", price: 7500, icon: "🍛", description: "Colorful rice dish with mixed vegetables and protein", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWFofyoX4PTMn-is_oYuPPdCGg0_sjfpBEUw&s" },
+            { id: 3, name: "Coconut Rice", price: 7500, icon: "🥥", description: "Creamy coconut rice with a touch of spice", image: "https://www.vmcdn.ca/f/files/alimoshotoday/images/953.png" },
+            { id: 4, name: "Ofada Rice", price: 7500, icon: "🍚", description: "Local Nigerian rice served with spicy sauce", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3tH9SlRVdVZmcwBT_TMUipRkuplLkdOumJA&s" },
+            { id: 5, name: "Asun Coconut Rice", price: 7500, icon: "🍖", description: "Spicy grilled goat meat with coconut rice", image: "https://yellowplate.ng/wp-content/uploads/2023/04/ASUN-COCOCONUT-RICE.png" },
+            { id: 6, name: "Native Rice", price: 7500, icon: "🌾", description: "Traditional native rice with assorted proteins", image: "https://tiarasfirewoodjollof.co.uk/wp-content/uploads/2024/09/Native-Rice.jpg" },
+            // Soups
+            { id: 7, name: "Ogbono Soup", price: 8000, icon: "🥣", description: "Nutritious soup made from ground ogbono seeds, rich and hearty.", image: "https://shopafricausa.com/cdn/shop/articles/ogbono_788x.jpg?v=1566349969" },
+            { id: 8, name: "Okro Soup", price: 8000, icon: "🥣", description: "Classic Nigerian okro soup, delicious and healthy.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYkE0SyDuvVw4p_cYQoIZ_e9haApIwp5Ke-A&s" },
+            { id: 9, name: "Vegetable Soup", price: 8000, icon: "🥬", description: "Mixed vegetable soup packed with nutrients and flavor.", image: "https://www.organicfacts.net/wp-content/uploads/eforirosoup-500x500.jpg" },
+            { id: 10, name: "Efo Riro", price: 8000, icon: "🥬", description: "Yoruba-style spinach stew with assorted meats.", image: "https://kikifoodies.com/wp-content/uploads/2024/10/photo-output-9-scaled.jpeg" },
+            { id: 11, name: "Bitterleaf Soup", price: 8000, icon: "🥣", description: "Traditional bitterleaf soup, savory and slightly bitter.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU0cT0t6YGlKHLs0sHXRLUXpeuYBHiRuSe1g&s" },
+            { id: 12, name: "Oha Soup", price: 8000, icon: "🥣", description: "Delicate oha leaf soup, a southeastern Nigerian favorite.", image: "https://worldlytreat.com/wp-content/uploads/2024/07/oha-soup-2.jpg" },
+            { id: 13, name: "Egusi Soup", price: 8000, icon: "🥣", description: "Rich melon seed soup with assorted meats and vegetables.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUZM9-hrH0noyL5z_seD66O7DBPEHFbw64tw&s" },
+            // Special soups
+            { id: 14, name: "White Soup (Ofe Nsala)", price: 8000, icon: "🥣", description: "Delicate yam-based soup with catfish and spices.", image: "https://foods.africanmarketdubai.com/wp-content/uploads/2024/10/White-soup-1.jpg" },
+            { id: 15, name: "Pepper Soup", price: 5500, icon: "🌶️", description: "Spicy broth with assorted meats and aromatic herbs.", image: "https://www.chefadora.com/_next/image?url=https%3A%2F%2Fchefadora.b-cdn.net%2Fmedium_1000101431_57d7567d47.jpg&w=3840&q=75" },
+            { id: 16, name: "Banga Soup", price: 13000, icon: "🥣", description: "Palm nut soup with fresh fish and spices.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSSp1izfdW-8CuV0mk9Vp4NUZ5icBncbd1Cg&s" },
+            { id: 17, name: "Groundnut Soup", price: 8000, icon: "🥜", description: "Savory peanut soup with vegetables and meats.", image: "https://cdn.guardian.ng/wp-content/uploads/2020/09/Groundnut-Soup.-Photo-The-Kitchen-Muse-e1599948546462.jpg" },
+            { id: 18, name: "Afang Soup", price: 8000, icon: "🥬", description: "Leafy vegetable soup with periwinkle and meats.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYXRSIWoif40aPJ5mbqpk54vN7XTQQU8p-AQ&s" },
+            { id: 19, name: "Fisherman Soup", price: 13000, icon: "🐟", description: "Seafood-rich soup with fresh fish, prawns, and spices.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDg6XCzb7OQ77nJduxnE-RceK79eCjS1-QRw&s" },
+            // Stews
+            { id: 20, name: "Chicken Stew", price: 8000, icon: "🍗", description: "Classic Nigerian tomato stew with tender chicken pieces.", image: "https://lowcarbafrica.com/wp-content/uploads/2020/12/Nigerian-Chicken-Stew-IG-4.jpg" },
+            { id: 21, name: "Chicken Sauce", price: 9000, icon: "🍗", description: "Savory chicken sauce with vegetables.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEDgHTHCaNtPybH-bCx3N5tIpXmxQSu1FVhg&s" },
+            { id: 22, name: "Chicken Curry Sauce", price: 8000, icon: "🍛", description: "Creamy curry sauce with chicken and spices.", image: "https://www.fmnfoods.com/wp-content/uploads/2020/06/curry-600.jpg" },
+            { id: 23, name: "Beef Stew", price: 8000, icon: "🥩", description: "Rich tomato stew with tender beef chunks.", image: "https://miro.medium.com/v2/resize:fit:1200/0*7L7KWsrPcRB7_DCJ" },
+            { id: 24, name: "Fish Stew", price: 8000, icon: "🐟", description: "Spicy tomato stew with fresh fish.", image: "https://lowcarbafrica.com/wp-content/uploads/2024/10/African-FIsh-Stew-IG.jpg" },
+            // Peppered/Grilled
+            { id: 25, name: "Peppered Chicken", price: 10000, icon: "🍗", description: "Spicy grilled chicken tossed in pepper sauce.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV37gOsHJfdKjmSo_lF2RsPeu9D78G2GmYOQ&s" },
+            { id: 26, name: "Peppered Snail", price: 10000, icon: "🐌", description: "Tender snails tossed in spicy pepper sauce.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPqzhzgAFHyiaaIN0bkZ6tNPth09cLcjLMMg&s" },
+            { id: 27, name: "Grilled Fish", price: 10000, icon: "🐟", description: "Charcoal grilled fish with spicy marinade.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj84bWOvomrFiKeQUdk4RYxEgNKS6PeZLY8Q&s" },
+            // Porridge
+            { id: 28, name: "Potato Porridge", price: 6000, icon: "🥔", description: "Yam and potato porridge with vegetables.", image: "https://nkechiajaeroh.com/wp-content/uploads/2018/12/Sweet-potato-Porridge-recipe-main-photo-1-320x180.jpg" },
+            { id: 29, name: "Yam Porridge", price: 6000, icon: "🥔", description: "Traditional yam porridge with palm oil and greens.", image: "https://www.foodnify.com/wp-content/uploads/2024/09/yam-porridge.jpg" },
+            { id: 30, name: "Plantain Porridge", price: 6000, icon: "🍌", description: "Green plantain porridge with vegetables.", image: "https://eatwellabi.com/wp-content/uploads/2021/11/Green-plantain-porridge-12.jpg" },
+            // Roasted plantain/fish
+            { id: 31, name: "Roasted Plantain (Bole)", price: 8000, icon: "🍌", description: "Charcoal roasted plantain served with spicy sauce.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGB1T7-UO10XNsw1z3DEBtGKZw4-74XWmrWQ&s" },
+            // Beans
+            { id: 32, name: "Beans", price: 5000, icon: "🫘", description: "Nigerian-style stewed beans.", image: "https://allnigerianfoods.com/wp-content/uploads/red_red_recipe.jpg" },
+            // Pasta
+            { id: 33, name: "Jollof Pasta", price: 6500, icon: "🍝", description: "Pasta cooked in spicy jollof sauce.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt3Qpdmtv_H4O8fENQ_ygOd9KMCv0Y9FrWXQ&s" },
+            { id: 34, name: "Chicken Curry Pasta", price: 7500, icon: "🍝", description: "Pasta tossed in creamy chicken curry sauce.", image: "https://www.kitchengonerogue.com/wp-content/uploads/2025/04/chicken-curry-pasta-new-horiz-fav-IMG_6172.jpg" },
+            { id: 35, name: "Stirfry Pasta", price: 7000, icon: "🍝", description: "Veggie stir-fry pasta with Nigerian spices.", image: "https://www.fmnfoods.com/wp-content/uploads/2022/08/Veggie-Stir-Fry-Pasta-500x500.jpg" },
+            // Specials
+            { id: 36, name: "Nkwobi", price: 12000, icon: "🍲", description: "Spicy cow foot delicacy in palm oil sauce.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-LlWI-_iwsQ7f-ej1nzvjXkAQ3fJwSruscg&s" },
+            { id: 37, name: "Isi Ewu", price: 12000, icon: "🍲", description: "Goat head dish in spicy palm oil sauce.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQWCINc3c2rTptgKlxzZZB8701WDph6yo6nA&s" },
+            { id: 38, name: "Kpomo (Cowskin) Sauce", price: 7000, icon: "🍲", description: "Tender cowskin in spicy tomato sauce.", image: "https://villapot.com.au/wp-content/uploads/2024/07/Kpomo-sauce.webp" },
+            { id: 39, name: "Asun (Goatmeat)", price: 10000, icon: "🍖", description: "Spicy grilled goat meat.", image: "https://lowcarbafrica.com/wp-content/uploads/2019/09/Asun-recipe-IG-1-500x500.jpg" },
+            { id: 40, name: "Suya", price: 7000, icon: "🍢", description: "Grilled spicy beef skewers.", image: "https://eatwellabi.com/wp-content/uploads/2020/12/air-fryer-suya-2.jpg" },
+            { id: 41, name: "Beef Kebab", price: 3000, icon: "🍢", description: "Juicy beef kebabs with veggies.", image: "https://www.kitchensanctuary.com/wp-content/uploads/2024/09/Steak-Kebabs-square-FS.jpg" },
+            // Snacks
+            { id: 42, name: "Chin Chin", price: 3000, icon: "🍪", description: "Crunchy fried dough snack.", image: "https://cdn.shopify.com/s/files/1/0521/2415/6104/articles/Chin_Chin.jpg?v=1639595235" },
+            { id: 43, name: "Fish Roll", price: 2000, icon: "🥖", description: "Pastry roll stuffed with spicy fish.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRroei29T05ecniOJxcimxpeXc9Bz7b4m8Ufg&s" },
+            { id: 44, name: "Meat Pie", price: 2000, icon: "🥟", description: "Flaky pastry filled with minced meat and veggies.", image: "https://kikifoodies.com/wp-content/uploads/2024/12/3A8364CE-2F40-4ABD-BD01-72AF8BF5CDEC.jpeg" },
+            { id: 45, name: "Sausage Roll", price: 2000, icon: "🥖", description: "Pastry roll filled with sausage.", image: "https://www.amummytoo.co.uk/wp-content/uploads/2024/07/air-fryer-vegetarian-sausage-rolls-SQUARE.jpg" },
+            { id: 46, name: "Puff Puff", price: 1000, icon: "🍩", description: "Sweet deep-fried dough balls.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVW_J0dFOlrBI3ztwSuwXkmTsal8QLoT4QiQ&s" },
+            { id: 47, name: "Pancakes", price: 1000, icon: "🥞", description: "Soft Nigerian-style pancakes.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8k5yKxA9JsH8nsN4qyDs1_VMytfz3HMvkDA&s" },
+            { id: 48, name: "Kulikuli", price: 1000, icon: "🥜", description: "Crunchy peanut snack.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq8pyfZg5JGCKMn5MtjM8KAKAWfi2SxrosLQ&s" },
+            { id: 49, name: "Peanuts", price: 5000, icon: "🥜", description: "Roasted Nigerian peanuts.", image: "https://delomall.com/wp-content/webpc-passthru.php?src=https://delomall.com/wp-content/uploads/2022/04/Peanuts-Nigerian-Peanuts-510g.jpg&nocache=1" },
+            // Swallow
+            { id: 50, name: "Fufu", price: 1500, icon: "🥣", description: "Soft, stretchy fermented cassava swallow.", image: "https://cdn.tasteatlas.com/images/dishes/18db1e957439470abab686f395410ae9.jpg" },
+            { id: 51, name: "Semo", price: 3500, icon: "🥣", description: "Smooth semolina swallow, perfect with soups.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2EkBk_34UxOo-1ezm27M2LKWdxQh2_OUs1A&s" },
+            { id: 52, name: "Wheat", price: 2000, icon: "🥣", description: "Wheat flour swallow, healthy and filling.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9XOTScgHbv6FxX2-F2PKyNC8A4PkB7TRZzQ&s" },
+            { id: 53, name: "Amala", price: 4000, icon: "🥣", description: "Yam flour swallow, dark and smooth.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReV4XQjqrwkkAk-ngnNV0RQS9D6rQL9LNXkw&s" },
+            { id: 54, name: "Eba", price: 1500, icon: "🥣", description: "Cassava granules swallow, classic Nigerian staple.", image: "https://www.myactivekitchen.com/wp-content/uploads/2015/03/how-to-make-eba-food-nigerian-eba-img2-1.jpg" },
+            // Breakfast
+            { id: 55, name: "Akara", price: 2000, icon: "🥯", description: "Crispy fried bean cakes, a popular Nigerian breakfast.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRntzCRy4SQ6aJYo55LOeDSulBo9fYwnNJwuA&s" },
+            { id: 56, name: "Moi Moi", price: 2500, icon: "🍮", description: "Steamed bean pudding, nutritious and delicious.", image: "https://www.mydiasporakitchen.com/wp-content/uploads/2019/06/savingpng-19.png" }
+        ];
+
+        const ingredients = [
+            { id: 1, name: "Palm Oil", price: 5500, icon: "🫗", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGQ4yVwBv5TlBKTDRB_RCC3N6tOrolfeY8ag&s", description: "Premium red palm oil from Nigeria" },
+            { id: 2, name: "Egusi Seeds", price: 8000, icon: "🫘", image: "https://www.neogric.com/wp-content/uploads/2025/04/Neogric-Melon-Seeds-2.jpg", description: "Ground melon seeds for authentic egusi soup (per kg)" },
+            { id: 3, name: "Ogbono Seeds", price: 8000, icon: "🫘", image: "https://stermart.com/wp-content/uploads/2021/09/stermart-marketplace-ogbono-seeds-mango-seends-african-nigerian-food-buy-and-sell-in-usa-canada-online-grocery-store.jpeg", description: "Ogbono (wild mango) seeds for soup (per kg)" },
+            { id: 4, name: "Stock Fish", price: 12000, icon: "🐟", image: "https://mltabfh9dl60.i.optimole.com/w:1080/h:1080/q:mauto/ig:avif/https://whudeysell.com/wp-content/uploads/2017/12/89.png", description: "Premium dried stock fish" },
+            { id: 5, name: "Kpomo", price: 2500, icon: "🍲", image: "https://cdn.shopify.com/s/files/1/0067/1576/8885/files/Ponmo_3_480x480.jpg?v=1724258093", description: "Tender cowskin for soups and stews" },
+            { id: 6, name: "Bitterleaf", price: 2000, icon: "🥬", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRs2yHUt1H67BOgRKyDmuueAHIl_2tKr-e35Q&s", description: "Fresh bitterleaf for Nigerian soups" },
+            { id: 7, name: "Ugu (Fluted Pumpkin)", price: 2000, icon: "🥬", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMNiZubhW92PP4KB_2bNl5uDNX1PFPSxg9vQ&s", description: "Ugu leaf for vegetable soup" },
+            { id: 8, name: "Water Leaf", price: 2000, icon: "🥬", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3JWXsl9tNpxxc5mWJ7vwhsRRflWXS6f4p5Q&s", description: "Fresh water leaf for soups" },
+            { id: 9, name: "Oha Leaf", price: 3000, icon: "🥬", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-jVPR8FaXsOoTBkCTtUy6kTDQusXw2nVeQQ&s", description: "Oha leaf for Oha soup" },
+            { id: 10, name: "Scent Leaf", price: 2000, icon: "🌿", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR0bKd5NF_9LyTYzR4RJkWLPkbwKoQ4wZ4ew&s", description: "Scent leaf for flavoring soups" },
+            { id: 11, name: "Uziza Leaf", price: 2000, icon: "🌿", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSafjF6serekIJsROtnJXQvoZiTs9ZU_3ifLw&s", description: "Uziza leaf for spicy soups" },
+            { id: 12, name: "Poundo Yam", price: 8000, icon: "🥔", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnY2RSYqizONVjKP_4GwxEQRms-WuGovj_7g&s", description: "Instant yam flour (per kg)" },
+            { id: 13, name: "Semovita", price: 6000, icon: "🥣", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSThUHZdE3Xy3WvSJ7jL1uYRfLvLfaMO_Id8Q&s", description: "Semovita flour for swallow" },
+            { id: 14, name: "Semolina", price: 7000, icon: "🥣", image: "https://media.post.rvohealth.io/wp-content/uploads/2020/08/semolina-1200x628-facebook-1200x628.jpg", description: "Semolina flour for swallow" },
+            { id: 15, name: "Native Spice Mix", price: 4000, icon: "🧂", image: "https://immaculateruemu.com/wp-content/uploads/2019/02/The-Nigerian-Suya-Spice-Mix-Mix.bk_-500x375.jpeg", description: "Traditional Nigerian spice blend" },
+            { id: 16, name: "Gino Tomato Mix", price: 2000, icon: "🍅", image: "https://waziri.ng/wp-content/uploads/2024/04/Gino-Party-Jollof-Tomato-Seasoning-Mix.jpg", description: "Gino tomato seasoning mix" },
+            { id: 17, name: "Spices", price: 1000, icon: "🧂", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcWe90lOXHaiMc0-06Wdh_vNlXk4e1-jQSjA&s", description: "Assorted Nigerian spices" },
+            { id: 18, name: "Seasoning Cubes", price: 10000, icon: "🧊", image: "https://muiizhicofoodempire.com/cdn/shop/files/Screenshot-20240201_135406_Walmart.jpg?v=1706817281", description: "Seasoning cubes for soups and stews" },
+            { id: 19, name: "Abacha", price: 10000, icon: "🥗", image: "https://trulyafrican.co.uk/wp-content/uploads/2020/09/abacha-2_1024x.png", description: "Abacha (African salad) strips (per kg)" },
+            { id: 20, name: "Beans", price: 12000, icon: "🫘", image: "https://gazettengr.com/wp-content/uploads/images-20-2.jpeg", description: "Nigerian brown beans (per kg)" },
+            { id: 21, name: "Okpa Flour", price: 14000, icon: "🍞", image: "https://www.mychopchop.ca/cdn/shop/products/BambaraokpaflourinCanada_Mychopchop_888x700.jpg?v=1623014655", description: "Okpa (Bambara nut) flour (per kg)" },
+            { id: 22, name: "Yam", price: 10000, icon: "🥔", image: "https://media.post.rvohealth.io/wp-content/uploads/2023/09/whole-and-halved-raw-african-yam-732x549-thumbnail.jpg", description: "Whole African yam tuber" },
+            { id: 23, name: "Dried Fish (Azu Mangala)", price: 12000, icon: "🐟", image: "https://afrimartuk.com/wp-content/uploads/2023/07/WhatsApp-Image-2023-07-29-at-11.10.29-AM-1.jpeg", description: "Premium dried mangala fish" }
+        ];
+
+        // State
+        let cart = [];
+        let cartTotal = 0;
+
+        // DOM Elements
+        const cartCount = document.getElementById('cart-count');
+        const cartModal = document.getElementById('cart-modal');
+        const cartItems = document.getElementById('cart-items');
+        const cartTotalElement = document.getElementById('cart-total');
+        const mealsGrid = document.getElementById('meals-grid');
+        const ingredientsGrid = document.getElementById('ingredients-grid');
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function () {
+            // DO NOT hide app content or show login modal on load
+            renderProducts();
+            updateCartUI();
+
+            // Add Login button to navbar if not present
+            const navMenu = document.getElementById('nav-menu');
+            if (!document.getElementById('login-nav-btn')) {
+                const li = document.createElement('li');
+                li.className = 'nav-item';
+                li.innerHTML = `<a href="#" id="login-nav-btn" onclick="openAuthModal()">Login</a>`;
+                navMenu.appendChild(li);
+            }
+        });
+
+        // Contextual authentication: show login modal when user tries to use a feature
+        let isAuthenticated = false;
+
+        function requireAuth(action) {
+            if (!isAuthenticated) {
+                openAuthModal();
+                // Optionally store intended action for post-login
+                return false;
+            }
+            return true;
+        }
+
+        // Override feature actions to require authentication
+        function addToCart(productId, type) {
+            if (!requireAuth()) return;
+            let product;
+            if (type === 'meal') {
+                product = meals.find(m => m.id === productId);
+            } else {
+                product = ingredients.find(i => i.id === productId);
+            }
+            if (!product) return;
+            const existingItem = cart.find(item => item.id === productId && item.type === type);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    type: type,
+                    name: product.name,
+                    price: product.price,
+                    icon: product.icon,
+                    quantity: 1
+                });
+            }
+            updateCartUI();
+            showSuccess(`${product.name} added to cart!`);
+            const cartIcon = document.querySelector('.cart-icon');
+            cartIcon.style.animation = 'none';
+            setTimeout(() => {
+                cartIcon.style.animation = 'float 0.5s ease-in-out';
+            }, 10);
+        }
+
+        function openCart() {
+            if (!requireAuth()) return;
+            cartModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function showCheckoutForm() {
+            if (!requireAuth()) return;
+            closeCart();
+            document.getElementById('checkout-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            document.getElementById('checkout-form').reset();
+        }
+
+        function openNutritionForm(planName) {
+            if (!requireAuth()) return;
+            document.getElementById('nutrition-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            document.getElementById('nutrition-plan-title').textContent = `Book ${planName} Consultation`;
+            document.getElementById('nutrition-form').reset();
+        }
+
+        // On successful login/signup, set isAuthenticated and close modal
+        function submitLogin(event) {
+            event.preventDefault();
+            isAuthenticated = true;
+            closeModal('auth-modal');
+            showSuccess('Login successful! Welcome back.');
+        }
+        function submitSignup(event) {
+            event.preventDefault();
+            isAuthenticated = true;
+            closeModal('auth-modal');
+            showSuccess('Signup successful! Welcome to Dine with Mee.');
+        }
+
+        // Render products
+        function renderProducts() {
+            // Render meals
+            mealsGrid.innerHTML = meals.map(meal => `
+                <div class="product-card slide-up">
+                    <div class="product-image" style="height:180px;display:flex;align-items:center;justify-content:center;background:#f8f9fa;">
+                        <img src="${meal.image}" alt="${meal.name}" style="max-height:160px;max-width:100%;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" />
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">${meal.name}</h3>
+                        <div class="product-price">${meal.price.toLocaleString()} RWF</div>
+                        <p class="product-description">${meal.description}</p>
+                        <button class="add-to-cart" onclick="addToCart(${meal.id}, 'meal')">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render ingredients
+            ingredientsGrid.innerHTML = ingredients.map(ingredient => `
+                <div class="product-card slide-up">
+                    <div class="product-image" style="height:180px;display:flex;align-items:center;justify-content:center;background:#f8f9fa;">
+                        ${ingredient.image ? `<img src="${ingredient.image}" alt="${ingredient.name}" style="max-height:160px;max-width:100%;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);object-fit:cover;" />` : ingredient.icon}
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">${ingredient.name}</h3>
+                        <div class="product-price">${ingredient.price.toLocaleString()} RWF</div>
+                        <p class="product-description">${ingredient.description}</p>
+                        <button class="add-to-cart" onclick="addToCart(${ingredient.id}, 'ingredient')">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Navigation functions
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.classList.toggle('active');
+        }
+
+        function showSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Cart functions
+        function addToCart(productId, type) {
+            if (!requireAuth()) return;
+            let product;
+            if (type === 'meal') {
+                product = meals.find(m => m.id === productId);
+            } else {
+                product = ingredients.find(i => i.id === productId);
+            }
+            if (!product) return;
+            const existingItem = cart.find(item => item.id === productId && item.type === type);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    type: type,
+                    name: product.name,
+                    price: product.price,
+                    icon: product.icon,
+                    quantity: 1
+                });
+            }
+            updateCartUI();
+            showSuccess(`${product.name} added to cart!`);
+            const cartIcon = document.querySelector('.cart-icon');
+            cartIcon.style.animation = 'none';
+            setTimeout(() => {
+                cartIcon.style.animation = 'float 0.5s ease-in-out';
+            }, 10);
+        }
+
+        function removeFromCart(productId, type) {
+            cart = cart.filter(item => !(item.id === productId && item.type === type));
+            updateCartUI();
+        }
+
+        function updateQuantity(productId, type, newQuantity) {
+            const item = cart.find(item => item.id === productId && item.type === type);
+            if (item && newQuantity > 0) {
+                item.quantity = newQuantity;
+                updateCartUI();
+            } else if (item && newQuantity <= 0) {
+                removeFromCart(productId, type);
+            }
+        }
+
+        function updateCartUI() {
+            // Update cart count
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+
+            // Update cart total
+            cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotalElement.textContent = `Total: ${cartTotal.toLocaleString()} RWF`;
+
+            // Update cart items display
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; color: var(--secondary-green); padding: 2rem;">Your cart is empty</p>';
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div>
+                            <span>${item.icon} ${item.name}</span>
+                            <div style="font-size: 0.9rem; color: var(--secondary-green);">
+                                ${item.price.toLocaleString()} RWF each
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <button onclick="updateQuantity(${item.id}, '${item.type}', ${item.quantity - 1})" 
+                                    style="background: var(--secondary-green); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer;">-</button>
+                            <span style="min-width: 20px; text-align: center;">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, '${item.type}', ${item.quantity + 1})" 
+                                    style="background: var(--primary-green); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer;">+</button>
+                            <button onclick="removeFromCart(${item.id}, '${item.type}')" 
+                                    style="background: var(--warm-accent); color: white; border: none; border-radius: 4px; padding: 0.2rem 0.5rem; cursor: pointer;">Remove</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function openCart() {
+            if (!requireAuth()) return;
+            cartModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCart() {
+            cartModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function showCheckoutForm() {
+            if (!requireAuth()) return;
+            closeCart();
+            document.getElementById('checkout-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            document.getElementById('checkout-form').reset();
+        }
+
+        function submitCheckoutForm(event) {
+            event.preventDefault();
+            closeModal('checkout-modal');
+            showSuccess('Your order has been placed! We will contact you for confirmation and delivery.');
+        }
+
+        function checkout() {
+            showCheckoutForm();
+        }
+
+        // Subscription functions
+        function subscribeToPlan(planName) {
+            const plans = {
+                basic: { name: 'Basic Plan', price: '15,000 RWF' },
+                pro: { name: 'Pro Plan', price: '20,000 RWF' },
+                premium: { name: 'Premium Plan', price: '30,000 RWF' }
+            };
+
+            const selectedPlan = plans[planName];
+            if (selectedPlan) {
+                showSuccess(`Successfully subscribed to ${selectedPlan.name}! Monthly fee: ${selectedPlan.price}`);
+            }
+        }
+
+        // Modal functions
+        function showSuccess(message, duration = 3000) {
+            const successModal = document.getElementById('success-modal');
+            const successMessage = document.getElementById('success-message');
+
+            successMessage.textContent = message;
+            successModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+
+            // Auto close after duration
+            setTimeout(() => {
+                closeModal('success-modal');
+            }, duration);
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function openNutritionForm(planName) {
+            if (!requireAuth()) return;
+            document.getElementById('nutrition-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            document.getElementById('nutrition-plan-title').textContent = `Book ${planName} Consultation`;
+            document.getElementById('nutrition-form').reset();
+        }
+
+        function submitNutritionForm(event) {
+            event.preventDefault();
+            closeModal('nutrition-modal');
+            showSuccess('Your nutrition consultation has been booked! Our team will contact you soon.');
+        }
+
+        // Add Login button to navbar if not present
+        document.addEventListener('DOMContentLoaded', function () {
+            const navMenu = document.getElementById('nav-menu');
+            if (!document.getElementById('login-nav-btn')) {
+                const li = document.createElement('li');
+                li.className = 'nav-item';
+                li.innerHTML = `<a href="#" id="login-nav-btn" onclick="openAuthModal()">Login</a>`;
+                navMenu.appendChild(li);
+            }
+        });
+
+        function openAuthModal() {
+            document.getElementById('auth-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            showLoginForm();
+        }
+
+        function showSignupForm() {
+            document.getElementById('login-form-section').style.display = 'none';
+            document.getElementById('signup-form-section').style.display = 'block';
+        }
+
+        function showLoginForm() {
+            document.getElementById('login-form-section').style.display = 'block';
+            document.getElementById('signup-form-section').style.display = 'none';
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+
+                // Close mobile menu if open
+                const navMenu = document.getElementById('nav-menu');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('slide-up');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all product cards and section elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const elementsToObserve = document.querySelectorAll('.product-card, .category-card, .plan-card');
+            elementsToObserve.forEach(el => observer.observe(el));
+        });
+
+        // Add scroll effect to navbar
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                // Scrolling up
+                navbar.style.transform = 'translateY(0)';
+            }
+            lastScrollTop = scrollTop;
+        });
+
+        // Enhanced hover effects for product cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const productCards = document.querySelectorAll('.product-card');
+            productCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'scale(1.03)';
+                    card.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.2)';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'scale(1)';
+                    card.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+                });
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeCart();
+                closeModal('success-modal');
+            }
+        });
+
+        // Analytics tracking simulation
+        function trackEvent(eventName, properties = {}) {
+            console.log(`Analytics Event: ${eventName}`, properties);
+        }
+
+        // Initialize enhanced features
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click tracking to all buttons
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    trackEvent('button_click', {
+                        button_text: e.target.textContent,
+                        page_section: e.target.closest('section')?.id || 'unknown'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
