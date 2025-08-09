@@ -1195,9 +1195,7 @@
 
         // Initialize app
         document.addEventListener('DOMContentLoaded', function () {
-            hideAppContent();
-            openAuthModal();
-
+            // DO NOT hide app content or show login modal on load
             renderProducts();
             updateCartUI();
 
@@ -1211,39 +1209,83 @@
             }
         });
 
-        // Hide main app until login
-        function hideAppContent() {
-            document.querySelector('.navbar').style.display = 'none';
-            document.querySelector('.hero').style.display = 'none';
-            document.querySelector('.main-content').style.display = 'none';
-            document.querySelector('.footer').style.display = 'none';
-        }
-        function showAppContent() {
-            document.querySelector('.navbar').style.display = '';
-            document.querySelector('.hero').style.display = '';
-            document.querySelector('.main-content').style.display = '';
-            document.querySelector('.footer').style.display = '';
+        // Contextual authentication: show login modal when user tries to use a feature
+        let isAuthenticated = false;
+
+        function requireAuth(action) {
+            if (!isAuthenticated) {
+                openAuthModal();
+                // Optionally store intended action for post-login
+                return false;
+            }
+            return true;
         }
 
-        // Override openAuthModal to hide app content
-        function openAuthModal() {
-            hideAppContent();
-            document.getElementById('auth-modal').style.display = 'flex';
+        // Override feature actions to require authentication
+        function addToCart(productId, type) {
+            if (!requireAuth()) return;
+            let product;
+            if (type === 'meal') {
+                product = meals.find(m => m.id === productId);
+            } else {
+                product = ingredients.find(i => i.id === productId);
+            }
+            if (!product) return;
+            const existingItem = cart.find(item => item.id === productId && item.type === type);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    type: type,
+                    name: product.name,
+                    price: product.price,
+                    icon: product.icon,
+                    quantity: 1
+                });
+            }
+            updateCartUI();
+            showSuccess(`${product.name} added to cart!`);
+            const cartIcon = document.querySelector('.cart-icon');
+            cartIcon.style.animation = 'none';
+            setTimeout(() => {
+                cartIcon.style.animation = 'float 0.5s ease-in-out';
+            }, 10);
+        }
+
+        function openCart() {
+            if (!requireAuth()) return;
+            cartModal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
-            showLoginForm();
         }
 
-        // On successful login/signup, show app content
+        function showCheckoutForm() {
+            if (!requireAuth()) return;
+            closeCart();
+            document.getElementById('checkout-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            document.getElementById('checkout-form').reset();
+        }
+
+        function openNutritionForm(planName) {
+            if (!requireAuth()) return;
+            document.getElementById('nutrition-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            document.getElementById('nutrition-plan-title').textContent = `Book ${planName} Consultation`;
+            document.getElementById('nutrition-form').reset();
+        }
+
+        // On successful login/signup, set isAuthenticated and close modal
         function submitLogin(event) {
             event.preventDefault();
+            isAuthenticated = true;
             closeModal('auth-modal');
-            showAppContent();
             showSuccess('Login successful! Welcome back.');
         }
         function submitSignup(event) {
             event.preventDefault();
+            isAuthenticated = true;
             closeModal('auth-modal');
-            showAppContent();
             showSuccess('Signup successful! Welcome to Dine with Mee.');
         }
 
@@ -1298,17 +1340,15 @@
 
         // Cart functions
         function addToCart(productId, type) {
+            if (!requireAuth()) return;
             let product;
             if (type === 'meal') {
                 product = meals.find(m => m.id === productId);
             } else {
                 product = ingredients.find(i => i.id === productId);
             }
-
             if (!product) return;
-
             const existingItem = cart.find(item => item.id === productId && item.type === type);
-
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
@@ -1321,11 +1361,8 @@
                     quantity: 1
                 });
             }
-
             updateCartUI();
             showSuccess(`${product.name} added to cart!`);
-
-            // Add animation to cart icon
             const cartIcon = document.querySelector('.cart-icon');
             cartIcon.style.animation = 'none';
             setTimeout(() => {
@@ -1384,6 +1421,7 @@
         }
 
         function openCart() {
+            if (!requireAuth()) return;
             cartModal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
@@ -1394,6 +1432,7 @@
         }
 
         function showCheckoutForm() {
+            if (!requireAuth()) return;
             closeCart();
             document.getElementById('checkout-modal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -1445,6 +1484,7 @@
         }
 
         function openNutritionForm(planName) {
+            if (!requireAuth()) return;
             document.getElementById('nutrition-modal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
             document.getElementById('nutrition-plan-title').textContent = `Book ${planName} Consultation`;
